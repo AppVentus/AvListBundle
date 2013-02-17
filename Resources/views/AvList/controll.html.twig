@@ -2,7 +2,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
-    $(document).on('click', '.pagination a', function(event) {
+    $(document).on('click', '.pagination a, .sortable a', function(event) {
         $('#canvasloader-container').fadeIn();
         event.preventDefault();
     $.ajax({
