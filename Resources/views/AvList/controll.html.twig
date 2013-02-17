@@ -1,4 +1,7 @@
+
+{% if list.getPager.haveToPaginate %}
 {{ list.controll|raw }}
+{% endif %}
 <script type="text/javascript">
     $(document).ready(function(){
 
