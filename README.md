@@ -4,11 +4,17 @@ AvListBundle
 Easily make paginate and orderable list in Symfony2
 
 1) Install
+----------------
 
-TODO
+Add this in your composer :
+
+
+        "appventus/avlist-bundle": "dev-master"
+
 
 2) How to use it ?
 ----------------
+
 a) Controller
 ----------------
 

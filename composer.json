@@ -1,0 +1,24 @@
+{
+    "name": "appventus/avlist-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony AvListBundle",
+    "keywords": ["list","order","paginator", "bootstrap"],
+    "homepage": "https://github.com/paulandrieux/AvListBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Paul Andrieux (AppVentus)",
+            "email": "paul@appventus.com",
+            "homepage": "http://appventus.com"
+        }
+    ],
+    "require-dev": {
+        "symfony/class-loader": "2.1.*",
+        "pagerfanta/pagerfanta": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "AppVentus\\ListBundle": "" }
+    },
+    "target-dir": "AppVentus/ListBundle",
+    "minimum-stability": "dev"
+}
