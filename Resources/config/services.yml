@@ -1,0 +1,6 @@
+services:
+    av_list:
+        class: AppVentus\ListBundle\Component\AvList
+        arguments:
+            - "@service_container"
+
