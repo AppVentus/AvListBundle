@@ -65,7 +65,7 @@ class AvList
                         ));
                     break;
                 default:
-                    throw new \Exception("Theme not supported, available is : 'range'")
+                    throw new \Exception("Theme not supported, available is : 'range'");
                     break;
             }
         } else {
