@@ -115,7 +115,7 @@ And now our Partial :
             {% endfor %}
             </tbody>
         </table>
-        {% include 'AvListBundle:AvList:controll.html.twig' with {'list':list}%}
+        {% include 'AvListBundle:AvList:control.html.twig' with {'list':list}%}
         </div>
         {% else %}
         <p>No Foos :(</p>
