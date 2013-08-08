@@ -13,7 +13,7 @@
                 type: "GET",
                 success: function(data) {
                 $('#canvasloader-container').fadeOut();
-                $("#{{list.id}}").html(data);
+                $("#{{list.options.update}}").html(data);
                 },
                 error: function(data) {
                     $('#canvasloader-container').fadeOut();
