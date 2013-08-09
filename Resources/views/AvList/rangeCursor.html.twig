@@ -1,0 +1,20 @@
+<div style="text-align:right">
+    {% if paginator.getCurrentPage != 1 %}
+        <span><a class="ajax" update="{{container_id}}" href="{{ path(route, {'page': paginator.getCurrentPage-1,'orderBy': orderBy, 'way': way }) }}">&larr;</a>&nbsp;</span>
+    {% endif %}
+
+<span>[ {{ paginator.getCurrentPage*paginator.getMaxPerPage-paginator.getMaxPerPage }} -
+
+    {% if paginator.getCurrentPage*paginator.getMaxPerPage < paginator.getNbResults %}
+        {{ paginator.getCurrentPage*paginator.getMaxPerPage }}
+    {% else %}
+        {{ paginator.getNbResults }}
+    {% endif %}
+
+
+    ] sur {{ paginator.getNbResults }}</span>
+
+    {% if paginator.getCurrentPage != paginator.getNbPages %}
+        <span>&nbsp;<a class="ajax" update="{{container_id}}" href="{{ path(route, {'page': paginator.getCurrentPage+1,'orderBy': orderBy, 'way':way }) }}">&rarr;</a></span>
+    {% endif %}
+</div>

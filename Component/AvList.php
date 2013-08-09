@@ -16,7 +16,8 @@ class AvList
     public $request;
     public $templating;
     public $page = 1;
-    public $options = array('id'=>'sortable-list','maxPerPage'=>10, 'proximity'=>3);
+    public $options;
+    public $template;
 
     public function __construct(ContainerInterface $container)
     {
@@ -25,6 +26,14 @@ class AvList
         $this->orderby = $this->request->query->get('orderby');
         $this->way = $this->request->query->get('way') ? $this->request->query->get('way') : $this->way;
         $this->page = $this->request->query->get('page') ? $this->request->query->get('page') : $this->page;
+        $this->template = "AvListBundle:AvList:list.html.twig";
+        $this->options = array(
+            'id' => 'sortable-list',
+            'class'=>'sortable-list',
+            'container_id' =>  'list-container',
+            'container_class' =>  'list-container',
+            'maxPerPage'=>10,
+            'proximity'=>3);
     }
 
     public function setOptions($options)
@@ -47,6 +56,7 @@ class AvList
         $pager->setMaxPerPage($this->options['maxPerPage']);
         $pager->setCurrentPage($this->page);
         $this->pager = $pager;
+
         return $pager;
     }
 
@@ -56,13 +66,13 @@ class AvList
             switch ($this->options['theme']) {
                 case 'range':
                     $paginatorControll = $this->templating->render(
-                        'AvAwesomeShorcutsBundle:Paginator:rangeCursor.html.twig',
+                        'AvListBundle:AvList:rangeCursor.html.twig',
                         array(
                             'paginator'    => $this->pager,
                             'route'        => $this->request->get('_route'),
                             'orderBy'      => $this->orderby,
                             'way'          => $this->way,
-                            'update'       => $this->options['update'] ? : '',
+                            'container_id'       => $this->options['container_id'] ? : '',
                         ));
                     break;
                 default:
@@ -90,5 +100,22 @@ class AvList
     public function getId()
     {
         return $this->options['id'];
+    }
+    public function getContainer()
+    {
+        return $this->options['container'];
+    }
+    public function getClass()
+    {
+        return $this->options['class'];
+    }
+
+    public function setTemplate($template)
+    {
+        $this->template = $template;
+    }
+    public function getTemplate()
+    {
+        return $this->template;
     }
 }

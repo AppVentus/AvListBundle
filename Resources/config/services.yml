@@ -4,3 +4,9 @@ services:
         arguments:
             - "@service_container"
 
+
+    av_list.twig.list_extension:
+        class: AppVentus\ListBundle\Twig\Extension\ListExtension
+        arguments: [@twig]
+        tags:
+            - { name: twig.extension }

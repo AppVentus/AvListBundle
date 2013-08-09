@@ -1,0 +1,23 @@
+<div id="{{ list.id }}" class="{{list.class}}">
+    {% if list.getPager.getNbResults > 0 %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="sortable" id="item.id">{{ 'item.id'|trans|desc('#') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in list.pager %}
+                <tr class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
+                    <td>
+                        {{ item.id }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% include 'AvListBundle:AvList:control.html.twig' with {'list': list }%}
+    {% else %}
+    <h1 style="text-align: center;"><small>{{ 'no.result'|trans|desc('No result')}}</small></h1>
+    {% endif %}
+</div>
