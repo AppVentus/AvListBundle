@@ -21,43 +21,60 @@ class AvList
 
     public function __construct(ContainerInterface $container)
     {
-        $this->request = $container->get('request');
+        $this->request    = $container->get('request');
         $this->templating = $container->get('templating');
-        $this->orderby = $this->request->query->get('orderby');
-        $this->way = $this->request->query->get('way') ? $this->request->query->get('way') : $this->way;
-        $this->page = $this->request->query->get('page') ? $this->request->query->get('page') : $this->page;
-        $this->template = "AvListBundle:AvList:list.html.twig";
-        $this->options = array(
-            'id' => 'sortable-list',
-            'class'=>'sortable-list',
-            'container_id' =>  'list-container',
-            'container_class' =>  'list-container',
-            'maxPerPage'=>10,
-            'proximity'=>3);
+        $this->orderby    = $this->request->query->get('orderby');
+        $this->way        = $this->request->query->get('way') ? $this->request->query->get('way') : $this->way;
+        $this->page       = $this->request->query->get('page') ? $this->request->query->get('page') : $this->page;
+        $this->template   = 'AvListBundle:AvList:list.html.twig';
+        $this->options    = array(
+            'id'              => 'sortable-list',
+            'class'           => 'sortable-list',
+            'container_id'    => 'list-container',
+            'container_class' => 'list-container',
+            'maxPerPage'      => 10,
+            'proximity'       => 3
+        );
     }
 
-    public function setOptions($options)
+    /**
+     * Set options.
+     *
+     * @param array $options Array of options.
+     * @return AvList
+     */
+    public function setOptions(array $options)
     {
         $this->options = array_merge($this->options, $options);
+
+        return $this;
     }
 
+    /**
+     * @param array $queryBuilder Array of options.
+     * @return AvList
+     */
     public function setQueryBuilder($queryBuilder)
     {
         if ($this->orderby && $this->way) {
             $queryBuilder->orderby($this->orderby, $this->way);
         }
         $this->queryBuilder = $queryBuilder;
+
+        return $this;
     }
 
     public function getPager()
     {
-        $adapter = new DoctrineORMAdapter($this->queryBuilder->getQuery());
-        $pager = new PagerFanta($adapter);
-        $pager->setMaxPerPage($this->options['maxPerPage']);
-        $pager->setCurrentPage($this->page);
-        $this->pager = $pager;
+        if (!$this->pager) {
+            $adapter = new DoctrineORMAdapter($this->queryBuilder->getQuery());
+            $pager   = new PagerFanta($adapter);
+            $pager->setMaxPerPage($this->options['maxPerPage']);
+            $pager->setCurrentPage($this->page);
+            $this->pager = $pager;
+        }
 
-        return $pager;
+        return $this->pager;
     }
 
     public function getControl()
@@ -72,7 +89,7 @@ class AvList
                             'route'        => $this->request->get('_route'),
                             'orderBy'      => $this->orderby,
                             'way'          => $this->way,
-                            'container_id'       => $this->options['container_id'] ? : '',
+                            'container_id' => $this->options['container_id'] ? : '',
                         ));
                     break;
                 default:
@@ -81,12 +98,11 @@ class AvList
             }
         } else {
             $routeGenerator = function($page) {
-                return $this->request->create($this->request->getUri(), "GET", array("page"=>$page))->getUri();
+                return $this->request->create($this->request->getUri(), 'GET', array('page' => $page))->getUri();
             };
 
             $view = new TwitterBootstrapView();
             $paginatorControll = $view->render($this->pager, $routeGenerator, $this->options);
-
         }
 
         return $paginatorControll;
@@ -110,10 +126,24 @@ class AvList
         return $this->options['class'];
     }
 
+    /**
+     * Set template.
+     *
+     * @param string $template Template.
+     * @return AvList
+     */
     public function setTemplate($template)
     {
         $this->template = $template;
+
+        return $this;
     }
+
+    /**
+     * Get template.
+     *
+     * @return string
+     */
     public function getTemplate()
     {
         return $this->template;
