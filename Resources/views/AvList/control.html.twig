@@ -36,11 +36,9 @@
           var re = new RegExp("(&|\\?)"+key+"=[^\&]*", "i");
           separator = uri.indexOf('?') !== -1 ? "&" : "?";
           if (uri.match(re)) {
-            console.log("replace");
             return uri.replace(re, '$1' + key + "=" + value);
           }
           else {
-            console.log("add");
             return uri + separator + key + "=" + value;
           }
         }
