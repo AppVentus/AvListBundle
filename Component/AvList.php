@@ -32,6 +32,7 @@ class AvList
             'class'=>'sortable-list',
             'container_id' =>  'list-container',
             'container_class' =>  'list-container',
+            'update_id' =>  null,
             'maxPerPage'=>10,
             'proximity'=>3);
     }
@@ -73,6 +74,7 @@ class AvList
                             'orderBy'      => $this->orderby,
                             'way'          => $this->way,
                             'container_id'       => $this->options['container_id'] ? : '',
+                            'update_id'       => $this->options['update_id'] ? : null,
                         ));
                     break;
                 default:
