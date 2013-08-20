@@ -34,7 +34,7 @@ class ListExtension extends \Twig_Extension
      */
     public function listWidget($list, $extra = array())
     {
-        return $this->twig->render("AvListBundle:Avlist:container.html.twig", array('list' => $list, 'extra' => $extra));
+        return $this->twig->render("AvListBundle:AvList:container.html.twig", array('list' => $list, 'extra' => $extra));
     }
 
 
