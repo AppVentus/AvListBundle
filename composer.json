@@ -3,7 +3,7 @@
     "type": "symfony-bundle",
     "description": "Symfony AvListBundle",
     "keywords": ["list","order","paginator", "bootstrap"],
-    "homepage": "https://github.com/paulandrieux/AvListBundle",
+    "homepage": "https://github.com/AppVentus/AvListBundle",
     "license": "MIT",
     "authors": [
         {
