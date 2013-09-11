@@ -1,7 +1,9 @@
 services:
     av_list:
         class: AppVentus\ListBundle\Component\AvList
-        arguments: ["@service_container"]
+        arguments: [@request, @templating]
+        public: true
+        scope: request
 
     av_list.twig.list_extension:
         class: AppVentus\ListBundle\Twig\Extension\ListExtension

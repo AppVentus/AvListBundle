@@ -60,7 +60,8 @@ Now, modify it to implement the AvList component :
                         $queryBuilder = $em->createQueryBuilder()->select('f')
                                 ->from('MyBundle:Foo', 'f');
                         //create an AvList with our request, the array in second argument is optional, default maxPerPage value is 10.
-                        $list = new AvList($request, array("maxPerPage"=>20));
+                        $list = $this->get('av_list');
+                        $list->addOption("maxPerPage", 20);
                         //and feed him with our query
                         $list->setQueryBuilder($queryBuilder);
 
@@ -99,9 +100,9 @@ And now our Partial :
         <table class="table">
             <thead>
                 <tr>
-                    <th class="sortable" id="f.name">Name</th>
+                    <th class="sortable" data-target="f.name">Name</th>
                     <th>Image</th>
-                    <th class="sortable" id="f.price">Price</th>
+                    <th class="sortable" data-target="f.price">Price</th>
                     <th>Description</th>
                 </tr>
             </thead>
@@ -133,11 +134,46 @@ In the partial view, you set on the th tag a class sortable and an id with the v
 
 This bundle use the PagerFanta bundle to build paginator, more specificly the TwitterBootstrapView. Options are available for this view, and you can pass them as second argument when you instanciate AvList:
 
-                        $list = new AvList($request, array(
-                                "proximity"=>3,
-                                "previous_message"=>"Précédent",
-                                [...]
-                            ));
+                        $list = $this->get('av_list');
+                        $list->addOption("proximity", 3);
+                        $list->addOption("previous_message", "Précédent");
+
+
 Please refer to [PagerFanta](https://github.com/whiteoctober/Pagerfanta/blob/master/README.md) doc for more information
+
+
+5) Multiple list in a page
+----------------
+
+If you need to have several lists components in a single page, you will have to define the route option (to specify a different url to call that the request one). Optionnally and if your route requires params, you obviously may pass an array through the route_parameters option.
+
+
+    /**
+     * Lists all Help\FaqItem entities.
+     *
+     * @Route("/", name="admin_myentity_list")
+     * @Route("/ajax/cat/{id}", name="ajax_admin_myentity_list_by_category")
+     * @Method("GET")
+     * @Template()
+     */
+    public function indexAction($id = null)
+    {
+        $categories = Your_function();
+        foreach ($categories as $key => $category) {
+            $list = $this->get('av_list');
+            $list->setQueryBuilder($em->getRepository('MyBundle:MyEntity')->createQueryBuilder('e')->where('e.category = :category')->setParameter('category', $category));
+            $list->setTemplate($partialTemplate);
+            $list->setOptions(array(
+                    'route'            => 'ajax_admin_myentity_list_by_category',
+                    'route_parameters' => array('id' => $category->getId()),
+                    'theme'            => 'range',
+                    'maxPerPage'       => 5,
+                    'container_class'  => $category->getId().'-myentity-list',
+                    'container_id'     => $category->getId().'-myentity-list'
+            ));
+            $params["lists"][$category->getId()] = $list;
+        }
+    }
+
 
 

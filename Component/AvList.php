@@ -6,7 +6,15 @@ use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\View\TwitterBootstrapView;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\TwigBundle\Debug\TimedTwigEngine as Templating;
 
+/**
+ * AvList class
+ *
+ * @package default
+ * @author Paul Andrieux, AppVentus
+ * @author Leny Bernard, AppVentus
+ **/
 class AvList
 {
     protected $queryBuilder;
@@ -19,23 +27,30 @@ class AvList
     public $options;
     public $template;
 
-    public function __construct(ContainerInterface $container)
+    /**
+     * This is the constructor. You can also call the service av_list which is a way easier
+     *
+     * @return string
+     */
+    public function __construct(Request $request, Templating $templating)
     {
-        $this->request    = $container->get('request');
-        $this->templating = $container->get('templating');
+        $this->request    = $request;
+        $this->templating = $templating;
 
         $this->orderby    = $this->request->query->get('orderby');
         $this->way        = $this->request->query->get('way') ? $this->request->query->get('way') : $this->way;
         $this->page       = $this->request->query->get('page') ? $this->request->query->get('page') : $this->page;
         $this->template   = 'AvListBundle:AvList:list.html.twig';
         $this->options    = array(
-            'id'              => 'sortable-list',
-            'class'           => 'sortable-list',
-            'container_id'    => 'list-container',
-            'update_id'       => null,
-            'container_class' => 'list-container',
-            'maxPerPage'      => 10,
-            'proximity'       => 3
+            'id'               => 'sortable-list',
+            'class'            => 'sortable-list',
+            'container_id'     => 'list-container',
+            'update_id'        => null,
+            'route'            => $this->request->get('_route'),
+            'route_parameters' => $this->request->get('_parameters', array()),
+            'container_class'  => 'list-container',
+            'maxPerPage'       => 10,
+            'proximity'        => 3
         );
 
     }
@@ -53,6 +68,18 @@ class AvList
         return $this;
     }
 
+
+    /**
+     * Set option.
+     *
+     * @param string $name Name of option.
+     * @param string $value Value of option.
+     */
+    public function addOption($name, $value)
+    {
+        $this->option[$name] = $value;
+    }
+
     /**
      * @param array $queryBuilder Array of options.
      * @return AvList
@@ -67,6 +94,11 @@ class AvList
         return $this;
     }
 
+    /**
+     * Build and get a pager computed by the options and request
+     *
+     * @return string
+     */
     public function getPager()
     {
         if (!$this->pager) {
@@ -80,6 +112,11 @@ class AvList
         return $this->pager;
     }
 
+    /**
+     * Get a paginator control
+     *
+     * @return string
+     */
     public function getControl()
     {
         if (array_key_exists('theme', $this->options)) {
@@ -89,12 +126,12 @@ class AvList
                         'AvListBundle:AvList:rangeCursor.html.twig',
                         array(
                             'paginator'    => $this->pager,
-                            'route'        => $this->request->get('_route'),
+                            'route'        => isset($this->options['route']) ? $this->options['route'] : $this->request->get('_route'),
+                            'route_parameters' => $this->options['route_parameters'] ? $this->options['route_parameters'] : $this->request->get('_parameters', array()),
                             'orderBy'      => $this->orderby,
                             'way'          => $this->way,
                             'update_id'    => $this->options['update_id'] ? : null,
-                            'container_id' => $this->options['container_id'] ? : '',
-
+                            'container_id' => $this->options['container_id'] ? : ''
                         ));
                     break;
                 default:
@@ -102,6 +139,7 @@ class AvList
                     break;
             }
         } else {
+            //TODO : make it possible to have several list with this TwitterBootstrapView paginator component
             $routeGenerator = function($page) {
                 return $this->request->create($this->request->getUri(), 'GET', array('page' => $page))->getUri();
             };
@@ -113,19 +151,41 @@ class AvList
         return $paginatorControll;
     }
 
+    /**
+     * Get way we have to sort results
+     *
+     * @return string
+     */
     public function getWay()
     {
         return $this->way == 'ASC' ? 'DESC' : 'ASC';
     }
 
+    /**
+     * Get id option
+     *
+     * @return string
+     */
     public function getId()
     {
         return $this->options['id'];
     }
+
+    /**
+     * Get container option
+     *
+     * @return string
+     */
     public function getContainer()
     {
         return $this->options['container'];
     }
+
+    /**
+     * Get class option
+     *
+     * @return string
+     */
     public function getClass()
     {
         return $this->options['class'];
