@@ -10,6 +10,11 @@
             "name": "Paul Andrieux (AppVentus)",
             "email": "paul@appventus.com",
             "homepage": "http://appventus.com"
+        },
+        {
+            "name": "Leny Bernard (AppVentus)",
+            "email": "leny@appventus.com",
+            "homepage": "http://appventus.com"
         }
     ],
     "require-dev": {
