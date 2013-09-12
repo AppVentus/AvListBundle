@@ -3,46 +3,45 @@
 {{ list.control|raw }}
 {% endif %}
 <script type="text/javascript">
+
     $(document).ready(function(){
-        $(document).on('click', '#{{ list.options.container_id }} .pagination a, #{{ list.options.container_id }} .sortable a', function(event) {
-            $('#canvasloader-container').fadeIn();
-            event.preventDefault();
-            $.ajax({
-                url: $(this).attr('href'),
-                context: document.body,
-                type: "GET",
-                success: function(data) {
-                $('#canvasloader-container').fadeOut();
-                $("#{{list.options.container_id}}").html(data);
-                },
-                error: function(data) {
-                    $('#canvasloader-container').fadeOut();
-                    alert("Il semble s'êre produit une erreur");
-                }
-            });
+        addLinkToSortableHead();
+    });
 
-            return false;
-        });
-
+    /**
+     * Create the table sorting links (th.sortable => th.sortable > a)
+     */
+    function addLinkToSortableHead() {
         $('#{{ list.options.container_id }} thead th.sortable').each(function(){
+            console.log('coucou');
             uri = "{{ path(list.options.route, list.options.route_parameters) }}";
             uri = updateQueryStringParameter('orderby', $(this).data('filter'), uri);
-            uri = updateQueryStringParameter('way', "{{list.getWay}}", uri);
+            var way;
+            if ('{{ list.orderby }}' === $(this).data('filter')) {
+                way = "{{list.toggleWay}}";
+            } else {
+                way = "ASC";
+            }
+            uri = updateQueryStringParameter('way', way, uri);
             title = $(this).html();
             link = '<a href="'+uri+'">'+title+'</a>';
             $(this).html(link);
         });
-        function updateQueryStringParameter(key, value, uri) {
-          var re = new RegExp("(&|\\?)"+key+"=[^\&]*", "i");
-          separator = uri.indexOf('?') !== -1 ? "&" : "?";
-          if (uri.match(re)) {
-            return uri.replace(re, '$1' + key + "=" + value);
-          }
-          else {
-            return uri + separator + key + "=" + value;
-          }
-        }
+    }
 
-    });
+    /**
+     * update the url with parameters
+     * @return string The url with the related param
+     */
+    function updateQueryStringParameter(key, value, uri) {
+      var re = new RegExp("(&|\\?)"+key+"=[^\&]*", "i");
+      separator = uri.indexOf('?') !== -1 ? "&" : "?";
+      if (uri.match(re)) {
+        return uri.replace(re, '$1' + key + "=" + value);
+      }
+      else {
+        return uri + separator + key + "=" + value;
+      }
+    }
 </script>
 <div id="canvasloader-container" style="display: none;"><img src="/bundles/avlist/images/ajax-loader.gif" title="Chargement en cours" alt="Chargement" width="32" height="32"></div>
