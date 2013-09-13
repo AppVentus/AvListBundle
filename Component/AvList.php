@@ -41,13 +41,14 @@ class AvList
         $this->way        = $this->request->query->get('way') ? $this->request->query->get('way') : $this->way;
         $this->page       = $this->request->query->get('page') ? $this->request->query->get('page') : $this->page;
         $this->template   = 'AvListBundle:AvList:list.html.twig';
+        $requestParameters = $this->request->getMethod() === 'GET' ? $this->request->query->all() : $this->request->request->all();
         $this->options    = array(
             'id'               => 'sortable-list',
             'class'            => 'sortable-list',
             'container_id'     => 'list-container',
             'update_id'        => null,
             'route'            => $this->request->get('_route'),
-            'route_parameters' => $this->request->get('_parameters', array()),
+            'route_parameters' => array_merge($this->request->get('_parameters', array()), $requestParameters),
             'container_class'  => 'list-container',
             'maxPerPage'       => 10,
             'proximity'        => 3
