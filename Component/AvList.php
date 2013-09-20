@@ -40,13 +40,14 @@ class AvList
         $this->way        = $this->request->query->get('way') ? $this->request->query->get('way') : $this->way;
         $this->page       = $this->request->query->get('page') ? $this->request->query->get('page') : $this->page;
         $this->template   = 'AvListBundle:AvList:list.html.twig';
+        $requestParameters = $this->request->getMethod() === 'GET' ? $this->request->query->all() : $this->request->request->all();
         $this->options    = array(
             'id'               => 'sortable-list',
             'class'            => 'sortable-list',
             'container_id'     => 'list-container',
             'update_id'        => null,
             'route'            => $this->request->get('_route'),
-            'route_parameters' => $this->request->get('_parameters', array()),
+            'route_parameters' => array_merge($this->request->get('_parameters', array()), $requestParameters),
             'container_class'  => 'list-container',
             'maxPerPage'       => 10,
             'proximity'        => 3
@@ -124,13 +125,13 @@ class AvList
                     $paginatorControll = $this->templating->render(
                         'AvListBundle:AvList:rangeCursor.html.twig',
                         array(
-                            'paginator'    => $this->pager,
-                            'route'        => isset($this->options['route']) ? $this->options['route'] : $this->request->get('_route'),
+                            'paginator'        => $this->pager,
+                            'route'            => isset($this->options['route']) ? $this->options['route'] : $this->request->get('_route'),
                             'route_parameters' => $this->options['route_parameters'] ? $this->options['route_parameters'] : $this->request->get('_parameters', array()),
-                            'orderBy'      => $this->orderby,
-                            'way'          => $this->way,
-                            'update_id'    => $this->options['update_id'] ? : null,
-                            'container_id' => $this->options['container_id'] ? : ''
+                            'orderby'          => $this->orderby,
+                            'way'              => $this->way,
+                            'update_id'        => $this->options['update_id'] ? : null,
+                            'container_id'     => $this->options['container_id'] ? : ''
                         ));
                     break;
                 default:
@@ -157,7 +158,27 @@ class AvList
      */
     public function getWay()
     {
-        return $this->way == 'ASC' ? 'DESC' : 'ASC';
+        return $this->way;
+    }
+
+    /**
+     * Get orderby field we have to sort results
+     *
+     * @return string
+     */
+    public function getOrderBy()
+    {
+        return $this->orderby;
+    }
+
+    /**
+     * Get the other way
+     *
+     * @return string
+     */
+    public function toggleWay()
+    {
+        return $this->getWay() == 'ASC' ? 'DESC' : 'ASC';
     }
 
     /**
