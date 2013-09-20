@@ -5,8 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\View\TwitterBootstrapView;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Bundle\TwigBundle\Debug\TimedTwigEngine as Templating;
+use Symfony\Bundle\TwigBundle\TwigEngine as Templating;
 
 /**
  * AvList class
