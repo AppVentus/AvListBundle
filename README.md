@@ -24,7 +24,7 @@ This is a classic action to list an entity :
         use Symfony\Component\HttpFoundation\Request;
 
         class FooController extends Controller
-        {
+        {m
                 /**
                  * Lists all Foo entities.
                  *
@@ -146,6 +146,8 @@ Please refer to [PagerFanta](https://github.com/whiteoctober/Pagerfanta/blob/mas
 ----------------
 
 If you need to have several lists components in a single page, you will have to define the route option (to specify a different url to call that the request one). Optionnally and if your route requires params, you obviously may pass an array through the route_parameters option.
+Also, you won't be able to use the av_list service because of a singleton pattern issue (if you use the service, you always will use the same object and so on, you will overwrite the values instead of create a new list.
+
 
 
     /**
@@ -160,7 +162,7 @@ If you need to have several lists components in a single page, you will have to 
     {
         $categories = Your_function();
         foreach ($categories as $key => $category) {
-            $list = $this->get('av_list');
+            $list = new AvList($request, $this->get('templating'));
             $list->setQueryBuilder($em->getRepository('MyBundle:MyEntity')->createQueryBuilder('e')->where('e.category = :category')->setParameter('category', $category));
             $list->setTemplate($partialTemplate);
             $list->setOptions(array(
