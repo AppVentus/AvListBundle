@@ -1,7 +1,7 @@
 {% trans_default_domain 'av_list' %}
 
-<div id="{{ list.id }}" class="{{list.class}}">
-    {% if list.getPager.getNbResults > 0 %}
+<div id="{{ list.options.id }}" class="{{ list.options.class }}">
+    {% if list.pager.nbResults > 0 %}
         <table class="table">
             <thead>
                 <tr>

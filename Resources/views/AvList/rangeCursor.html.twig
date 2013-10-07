@@ -1,11 +1,11 @@
 {% trans_default_domain 'av_list' %}
 
 <div style="text-align:right">
-    {% if paginator.getCurrentPage != 1 %}
+    {% if paginator.currentPage != 1 %}
         <span>
             <a class="ajax"
                update="{{ update_id ? update_id : container_id}}"
-               href="{{ path(route, route_parameters|merge({'page': paginator.getCurrentPage-1,'orderby': orderby, 'way': way })) }}">
+               href="{{ path(route, route_parameters|merge({'page': paginator.getCurrentPage-1, 'sort': sort, 'order': order })) }}">
                 &larr;
             </a>&nbsp;
         </span>
@@ -28,7 +28,7 @@
             &nbsp;
             <a class="ajax"
                update="{{ update_id ? update_id : container_id}}"
-               href="{{ path(route, route_parameters|merge({'page': paginator.currentPage + 1,'orderby': orderby, 'way':way })) }}">
+               href="{{ path(route, route_parameters|merge({'page': paginator.currentPage + 1, 'sort': sort, 'order': order })) }}">
                 &rarr;
             </a>
         </span>

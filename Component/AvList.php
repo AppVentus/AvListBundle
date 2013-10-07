@@ -20,8 +20,10 @@ abstract class AvList
     protected $options;
     /** @var int */
     protected $page;
-//    protected $sort;
-//    protected $order = 'ASC';
+    /** @var string */
+    protected $sort;
+    /** @var string */
+    protected $order;
 
     /**
      *
@@ -33,20 +35,15 @@ abstract class AvList
      */
     public function __construct(Request $request, TwigEngine $templating, $qb, $template = null, array $options = array())
     {
-        $this->request     = $request;
+        $this->request    = $request;
         $this->templating = $templating;
-        $this->template    = (is_string($template)) ? $template : 'AvListBundle:AvList:list.html.twig';
-        $this->page        = ($this->request->query->get('page')) ? $this->request->query->get('page') : 1;
+        $this->template   = (is_string($template)) ? $template : 'AvListBundle:AvList:list.html.twig';
+        $this->page       = ($this->request->query->get('page')) ? $this->request->query->get('page') : 1;
+        $this->sort       = $this->request->query->get('sort');
+        $this->order      = $this->request->query->get('order') ? $this->request->query->get('order') : 'ASC';
 
         $this->setData($qb);
         $this->setOptions($options);
-
-
-
-
-
-//        $this->orderby    = $this->request->query->get('orderby');
-//        $this->way        = $this->request->query->get('way') ? $this->request->query->get('way') : $this->way;
     }
 
     /**
@@ -67,16 +64,16 @@ abstract class AvList
      */
     public function setOptions(array $options)
     {
-        $requestParameters = $this->request->getMethod() === 'GET' ? $this->request->query->all() : $this->request->request->all();
+        $requestParameters = $this->request->isMethod('GET') ? $this->request->query->all() : $this->request->request->all();
 
         $defaultOptions    = array(
             'id'               => 'sortable-list',
             'class'            => 'sortable-list',
             'container_id'     => 'list-container',
+            'container_class'  => 'list-container',
             'update_id'        => null,
             'route'            => $this->request->get('_route'),
             'route_parameters' => array_merge($this->request->get('_parameters', array()), $requestParameters),
-            'container_class'  => 'list-container',
             'max_per_page'     => 10,
             'proximity'        => 3,
         );
@@ -85,7 +82,6 @@ abstract class AvList
 
         return $this;
     }
-
 
     /**
      * Set option.
