@@ -41,8 +41,8 @@ class AvListQueryBuilder extends AvList implements AvListInterface
      */
     public function getPager()
     {
-        $adapter = new Pagerfanta\Adapter\DoctrineORMAdapter($this->data->getQuery());
-        $pager   = new Pagerfanta\Pagerfanta($adapter);
+        $adapter = new \Pagerfanta\Adapter\DoctrineORMAdapter($this->data->getQuery());
+        $pager   = new \Pagerfanta\Pagerfanta($adapter);
         $pager->setMaxPerPage($this->options['max_per_page']);
         $pager->setCurrentPage($this->page);
 

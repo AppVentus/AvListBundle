@@ -46,63 +46,63 @@ This is a classic action to list an entity :
 b) View :
 ---------------
 
-As you could see before, we now load two views, an index with the layout, and a partial witch just contain the list:
+We now load two views, an index with the layout, and a partial witch just contain the list:
 
 index.html.twig :
 
-        {% extends "MyBundle::layout.html.twig" %}
+    {% extends "MyBundle::layout.html.twig" %}
 
-        {% block content %}
+    {% block content %}
         <h1>Foo list</h1>
-            {% include 'MyBundle:Foo:indexPartial.html.twig' with {'list':list}%}
-        {% endblock %}
+        {% include 'MyBundle:Foo:indexPartial.html.twig' with {'list':list}%}
+    {% endblock %}
 
-Yeah, it's pretty minimalist, but it's very important
+Yeah, it's pretty minimalist, but it's very important.
 
 And now our Partial :
 
-        {% if list.getPager.getNbResults > 0 %}
-        <div id="{{list.id}}">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th class="sortable" data-target="f.name">Name</th>
-                    <th>Image</th>
-                    <th class="sortable" data-target="f.price">Price</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for entity in list.pager %}
-                <tr>
-                    <td>
-                            {{ entity.name }}
-                    </td>
-                    [...]
-            {% endfor %}
-            </tbody>
-        </table>
-        {% include 'AvListBundle:AvList:control.html.twig' with {'list':list}%}
+    {% if list.pager.nbResults > 0 %}
+        <div id="{{ list.option('id') }}">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="sortable" data-target="f.name">Name</th>
+                        <th class="sortable" data-target="f.price">Price</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for foo in list.pager %}
+                        <tr>
+                            <td>{{ foo.name }}</td>
+                            <td>{{ foo.price }}</td>
+                            <td>{{ foo.name }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include 'AvListBundle:AvList:control.html.twig' with {'list':list}%}
         </div>
-        {% else %}
+    {% else %}
         <p>No Foos :(</p>
-        {% endif %}
+    {% endif %}
 
 And voila !
 
 3) How it works ?
 -----------------
 
-In the partial view, you set on the th tag a class sortable and an id with the value of the field you want to search on. In our exemple, the entity Foo has the alias "f" in the query builder, so to sort by Foo's name, you set the following th id: "f.name".
+In the partial view, you set on the th tag a class sortable and an id with the value of the field you want to search on.
+In our exemple, the entity Foo has the alias "f" in the query builder, so to sort by Foo's name, you set the following th id: "f.name".
 
 4) Options
 ----------------
 
 This bundle use the PagerFanta bundle to build paginator, more specificly the TwitterBootstrapView. Options are available for this view, and you can pass them as second argument when you instanciate AvList:
 
-                        $list = $this->get('av_list');
-                        $list->addOption("proximity", 3);
-                        $list->addOption("previous_message", "Précédent");
+    $list = $this->get('av_list');
+    $list->addOption("proximity", 3);
+    $list->addOption("previous_message", "Précédent");
 
 
 Please refer to [PagerFanta](https://github.com/whiteoctober/Pagerfanta/blob/master/README.md) doc for more information
@@ -113,8 +113,6 @@ Please refer to [PagerFanta](https://github.com/whiteoctober/Pagerfanta/blob/mas
 
 If you need to have several lists components in a single page, you will have to define the route option (to specify a different url to call that the request one). Optionnally and if your route requires params, you obviously may pass an array through the route_parameters option.
 Also, you won't be able to use the av_list service because of a singleton pattern issue (if you use the service, you always will use the same object and so on, you will overwrite the values instead of create a new list.
-
-
 
     /**
      * Lists all Help\FaqItem entities.
@@ -142,6 +140,4 @@ Also, you won't be able to use the av_list service because of a singleton patter
             $params["lists"][$category->getId()] = $list;
         }
     }
-
-
 
