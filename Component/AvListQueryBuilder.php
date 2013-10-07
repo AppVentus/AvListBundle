@@ -11,13 +11,13 @@ class AvListQueryBuilder extends AvList implements AvListInterface
     /**
      * Set data.
      *
-     * @param array $queryBuilder Array of options.
+     * @param array $queryBuilder QueryBuilder.
      * @return AvListQueryBuilder
      */
     public function setData(QueryBuilder $qb)
     {
-        if ($this->orderby && $this->way) {
-            $qb->orderby($this->orderby, $this->way);
+        if ($this->sort && $this->order) {
+            $qb->orderby($this->sort, $this->order);
         }
         $this->data = $qb;
 
@@ -35,9 +35,9 @@ class AvListQueryBuilder extends AvList implements AvListInterface
     }
 
     /**
-     * Build and get a pager computed by the options and request
+     * Build and get a pager computed by the options and request.
      *
-     * @return string
+     * @return PagerFanta
      */
     public function getPager()
     {

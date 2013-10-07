@@ -6,5 +6,6 @@ namespace AppVentus\ListBundle\Component;
  */
 interface AvListInterface
 {
+    public function setData($data);
     public function getPager();
 }
