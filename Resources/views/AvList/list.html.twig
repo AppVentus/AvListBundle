@@ -1,3 +1,5 @@
+{% trans_default_domain 'av_list' %}
+
 <div id="{{ list.id }}" class="{{list.class}}">
     {% if list.getPager.getNbResults > 0 %}
         <table class="table">
@@ -18,6 +20,8 @@
         </table>
         {% include 'AvListBundle:AvList:control.html.twig' with {'list': list }%}
     {% else %}
-    <h1 style="text-align: center;"><small>{{ 'no.result'|trans|desc('No result')}}</small></h1>
+        <h1 style="text-align: center;">
+            <small>{{ 'no.result'|trans|desc('No result')}}</small>
+        </h1>
     {% endif %}
 </div>

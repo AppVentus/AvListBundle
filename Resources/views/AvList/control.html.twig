@@ -1,11 +1,9 @@
-
 {% if list.getPager.haveToPaginate %}
-{{ list.control|raw }}
+    {{ list.control|raw }}
 {% endif %}
+
 <script type="text/javascript">
-
-    $(document).ready(function(){
-
+    $(document).ready(function() {
         /**
          * Create the table sorting links (th.sortable => th.sortable > a)
          */
@@ -25,4 +23,7 @@
         });
     });
 </script>
-<div id="canvasloader-container" style="display: none;"><img src="/bundles/avlist/images/ajax-loader.gif" title="Chargement en cours" alt="Chargement" width="32" height="32"></div>
+
+<div id="canvasloader-container" style="display: none;">
+    <img src="/bundles/avlist/images/ajax-loader.gif" title="Chargement en cours" alt="Chargement" width="32" height="32">
+</div>

@@ -8,8 +8,7 @@ Easily make paginate and orderable list in Symfony2
 
 Add this in your composer :
 
-
-        "appventus/avlist-bundle": "dev-master"
+    "appventus/avlist-bundle": "dev-master"
 
 
 2) How to use it ?
@@ -20,62 +19,29 @@ a) Controller
 
 This is a classic action to list an entity :
 
+    use Symfony\Component\HttpFoundation\Request;
 
-        use Symfony\Component\HttpFoundation\Request;
-
-        class FooController extends Controller
-        {m
-                /**
-                 * Lists all Foo entities.
-                 *
-                 */
-                public function indexAction(Request $request)
-                {
-                    $em = $this->getDoctrine()->getEntityManager();
-
-                    $queryBuilder = $em->createQueryBuilder()->select('f')
-                            ->from('MyBundle:Foo', 'f');
-
-                        return $this->render('MyBundle:Foo:index.html.twig', array(
-                            'entities' => $queryBuilder->getQuery()->execute(),
-                        ));
-                }
-
-Now, modify it to implement the AvList component :
-
-
-        use Symfony\Component\HttpFoundation\Request;
-        use AppVentus\ListBundle\Component\AvList;
-
-        class FooController extends Controller
+    class FooController extends Controller
+    {
+        /**
+         * Lists all Foo entities.
+         *
+         */
+        public function indexAction(Request $request)
         {
-                    /**
-                     * Lists all Foo entities.
-                     *
-                     */
-                    public function indexAction(Request $request)
-                    {
-                        $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getEntityManager();
+            $qb = $em->getRepository(MyBundle:Foo)->findAll();
 
-                        $queryBuilder = $em->createQueryBuilder()->select('f')
-                                ->from('MyBundle:Foo', 'f');
-                        //create an AvList with our request, the array in second argument is optional, default maxPerPage value is 10.
-                        $list = $this->get('av_list');
-                        $list->addOption("maxPerPage", 20);
-                        //and feed him with our query
-                        $list->setQueryBuilder($queryBuilder);
+            // Create an AvList
+            $list = $this->get('av_list')->getList($qb, 'template.html', array(
+                'max_per_page' => 20,
+            ));
 
-                        //check if request is ajax, so load only the partial
-                        if($this->get('request')->isXMLHttpRequest()){
-                            return $this->render('MyBundle:Foo:indexPartial.html.twig', array(
-                                'list' => $list,
-                            ));
-                        }else{
-                            return $this->render('MyBundle:Foo:index.html.twig', array(
-                                'list' => $list,
-                            ));
-                        }
-                    }
+            return array(
+                'list' => $list,
+            );
+        }
+    }
 
 b) View :
 ---------------
