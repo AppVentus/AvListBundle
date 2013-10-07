@@ -14,10 +14,10 @@ class AvListQueryBuilder extends AvList implements AvListInterface
      * @param array $queryBuilder QueryBuilder.
      * @return AvListQueryBuilder
      */
-    public function setData(QueryBuilder $qb)
+    public function setData($qb)
     {
         if ($this->sort && $this->order) {
-            $qb->orderby($this->sort, $this->order);
+            $qb->orderBy($this->sort, $this->order);
         }
         $this->data = $qb;
 
