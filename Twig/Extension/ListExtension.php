@@ -1,15 +1,11 @@
 <?php
 namespace AppVentus\ListBundle\Twig\Extension;
 
-
 /**
  * ListExtension extends Twig with page capabilities.
- *
  */
 class ListExtension extends \Twig_Extension
 {
-
-
     /**
      * contructor
      */
@@ -30,20 +26,23 @@ class ListExtension extends \Twig_Extension
 
 
     /**
-     * render actions for a widget
+     * Render actions for a widget
+     *
+     * return string
      */
     public function listWidget($list, $extra = array())
     {
-        return $this->twig->render("AvListBundle:AvList:container.html.twig", array('list' => $list, 'extra' => $extra));
+        return $this->twig->render('AvListBundle:AvList:container.html.twig', array('list' => $list, 'extra' => $extra));
     }
 
 
     /**
-     * get extension name
+     * Get extension name.
+     *
+     * @return string
      */
     public function getName()
     {
         return 'list';
     }
-
 }

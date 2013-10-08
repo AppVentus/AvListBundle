@@ -2,57 +2,58 @@
 namespace AppVentus\ListBundle\Component;
 
 use Symfony\Component\HttpFoundation\Request;
-use Pagerfanta\Pagerfanta;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\View\TwitterBootstrapView;
-use Symfony\Bundle\TwigBundle\TwigEngine as Templating;
+use Symfony\Bundle\TwigBundle\TwigEngine;
+use Doctrine\ORM\QueryBuilder;
 
 /**
- * AvList class
- *
- * @package default
- * @author Paul Andrieux, AppVentus
- * @author Leny Bernard, AppVentus
- **/
-class AvList
+ * AvList abstract class.
+ */
+abstract class AvList
 {
-    protected $queryBuilder;
-    public $orderby;
-    public $way = 'ASC';
-    public $pager;
-    public $request;
-    public $templating;
-    public $page = 1;
-    public $options;
-    public $template;
+    /** @var Request */
+    protected $request;
+    /** @var TwigEngine */
+    protected $templating;
+    /** @var string */
+    protected $template;
+    /** @var array */
+    protected $options;
+    /** @var int */
+    protected $page;
+    /** @var string */
+    protected $sort;
+    /** @var string */
+    protected $order;
 
     /**
-     * This is the constructor. You can also call the service av_list which is a way easier
      *
-     * @return string
+     * @param Request      $request      The request.
+     * @param TwigEngine   $templating   The templating engine.
+     * @param QueryBuilder $queryBuilder The queryBuilder.
+     * @param string       $template     Template to render.
+     * @param array        $options      Array of options.
      */
-    public function __construct(Request $request, Templating $templating)
+    public function __construct(Request $request, TwigEngine $templating, $qb, $template = null, array $options = array())
     {
         $this->request    = $request;
         $this->templating = $templating;
+        $this->template   = (is_string($template)) ? $template : 'AvListBundle:AvList:list.html.twig';
+        $this->page       = ($this->request->query->get('page')) ? $this->request->query->get('page') : 1;
+        $this->sort       = $this->request->query->get('sort');
+        $this->order      = $this->request->query->get('order') ? $this->request->query->get('order') : 'ASC';
 
-        $this->orderby    = $this->request->query->get('orderby');
-        $this->way        = $this->request->query->get('way') ? $this->request->query->get('way') : $this->way;
-        $this->page       = $this->request->query->get('page') ? $this->request->query->get('page') : $this->page;
-        $this->template   = 'AvListBundle:AvList:list.html.twig';
-        $requestParameters = $this->request->getMethod() === 'GET' ? $this->request->query->all() : $this->request->request->all();
-        $this->options    = array(
-            'id'               => 'sortable-list',
-            'class'            => 'sortable-list',
-            'container_id'     => 'list-container',
-            'update_id'        => null,
-            'route'            => $this->request->get('_route'),
-            'route_parameters' => array_merge($this->request->get('_parameters', array()), $requestParameters),
-            'container_class'  => 'list-container',
-            'maxPerPage'       => 10,
-            'proximity'        => 3
-        );
+        $this->setData($qb);
+        $this->setOptions($options);
+    }
 
+    /**
+     * Get template.
+     *
+     * @return string
+     */
+    public function getTemplate()
+    {
+        return $this->template;
     }
 
     /**
@@ -63,11 +64,24 @@ class AvList
      */
     public function setOptions(array $options)
     {
-        $this->options = array_merge($this->options, $options);
+        $requestParameters = $this->request->isMethod('GET') ? $this->request->query->all() : $this->request->request->all();
+
+        $defaultOptions    = array(
+            'id'               => 'sortable-list',
+            'class'            => 'sortable-list',
+            'container_id'     => 'list-container',
+            'container_class'  => 'list-container',
+            'update_id'        => null,
+            'route'            => $this->request->get('_route'),
+            'route_parameters' => array_merge($this->request->get('_parameters', array()), $requestParameters),
+            'max_per_page'     => 10,
+            'proximity'        => 3,
+        );
+
+        $this->options = array_merge($defaultOptions, $options);
 
         return $this;
     }
-
 
     /**
      * Set option.
@@ -81,35 +95,24 @@ class AvList
     }
 
     /**
-     * @param array $queryBuilder Array of options.
-     * @return AvList
+     * Get options.
+     *
+     * @return array
      */
-    public function setQueryBuilder($queryBuilder)
+    public function getOptions()
     {
-        if ($this->orderby && $this->way) {
-            $queryBuilder->orderby($this->orderby, $this->way);
-        }
-        $this->queryBuilder = $queryBuilder;
-
-        return $this;
+        return $this->options;
     }
 
     /**
-     * Build and get a pager computed by the options and request
+     * Get option.
      *
-     * @return string
+     * @param string $name Option name.
+     * @return mixed
      */
-    public function getPager()
+    public function getOption($name)
     {
-        if (!$this->pager) {
-            $adapter = new DoctrineORMAdapter($this->queryBuilder->getQuery());
-            $pager   = new PagerFanta($adapter);
-            $pager->setMaxPerPage($this->options['maxPerPage']);
-            $pager->setCurrentPage($this->page);
-            $this->pager = $pager;
-        }
-
-        return $this->pager;
+        return $this->option[$name];
     }
 
     /**
@@ -122,7 +125,7 @@ class AvList
         if (array_key_exists('theme', $this->options)) {
             switch ($this->options['theme']) {
                 case 'range':
-                    $paginatorControll = $this->templating->render(
+                    $paginatorControl = $this->templating->render(
                         'AvListBundle:AvList:rangeCursor.html.twig',
                         array(
                             'paginator'        => $this->pager,
@@ -144,93 +147,40 @@ class AvList
                 return $this->request->create($this->request->getUri(), 'GET', array('page' => $page))->getUri();
             };
 
-            $view = new TwitterBootstrapView();
-            $paginatorControll = $view->render($this->pager, $routeGenerator, $this->options);
+            $view = new \Pagerfanta\View\TwitterBootstrapView();
+            $paginatorControl = $view->render($this->pager, $routeGenerator, $this->options);
         }
 
-        return $paginatorControll;
+        return $paginatorControl;
     }
 
     /**
-     * Get way we have to sort results
+     * Get the ordering expression.
      *
      * @return string
      */
-    public function getWay()
+    public function getSort()
     {
-        return $this->way;
+        return $this->sort;
     }
 
     /**
-     * Get orderby field we have to sort results
+     * Get the ordering direction.
      *
      * @return string
      */
-    public function getOrderBy()
+    public function getOrder()
     {
-        return $this->orderby;
+        return $this->order;
     }
 
     /**
-     * Get the other way
+     * Invert the ordering direction.
      *
      * @return string
      */
-    public function toggleWay()
+    public function toggleOrder()
     {
-        return $this->getWay() == 'ASC' ? 'DESC' : 'ASC';
-    }
-
-    /**
-     * Get id option
-     *
-     * @return string
-     */
-    public function getId()
-    {
-        return $this->options['id'];
-    }
-
-    /**
-     * Get container option
-     *
-     * @return string
-     */
-    public function getContainer()
-    {
-        return $this->options['container'];
-    }
-
-    /**
-     * Get class option
-     *
-     * @return string
-     */
-    public function getClass()
-    {
-        return $this->options['class'];
-    }
-
-    /**
-     * Set template.
-     *
-     * @param string $template Template.
-     * @return AvList
-     */
-    public function setTemplate($template)
-    {
-        $this->template = $template;
-
-        return $this;
-    }
-
-    /**
-     * Get template.
-     *
-     * @return string
-     */
-    public function getTemplate()
-    {
-        return $this->template;
+        return $this->getSort() == 'ASC' ? 'DESC' : 'ASC';
     }
 }

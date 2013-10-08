@@ -1,28 +1,29 @@
-
-{% if list.getPager.haveToPaginate %}
-{{ list.control|raw }}
+{% if list.pager.haveToPaginate %}
+    {{ list.control|raw }}
 {% endif %}
+
 <script type="text/javascript">
-
-    $(document).ready(function(){
-
+    $(document).ready(function() {
         /**
          * Create the table sorting links (th.sortable => th.sortable > a)
          */
         $('#{{ list.options.container_id }} thead th.sortable').each(function(){
             uri = "{{ path(list.options.route, list.options.route_parameters) }}";
-            uri = updateQueryStringParameter('orderby', $(this).data('filter'), uri);
-            var way;
-            if ('{{ list.orderby }}' === $(this).data('filter')) {
-                way = "{{list.toggleWay}}";
+            uri = updateQueryStringParameter('sort', $(this).data('filter'), uri);
+            var order;
+            if ('{{ list.sort }}' === $(this).data('filter')) {
+                order = "{{list.toggleOrder}}";
             } else {
-                way = "ASC";
+                order = 'ASC';
             }
-            uri = updateQueryStringParameter('way', way, uri);
+            uri = updateQueryStringParameter('order', order, uri);
             title = $(this).html();
             link = '<a href="'+uri+'">'+title+'</a>';
             $(this).html(link);
         });
     });
 </script>
-<div id="canvasloader-container" style="display: none;"><img src="/bundles/avlist/images/ajax-loader.gif" title="Chargement en cours" alt="Chargement" width="32" height="32"></div>
+
+<div id="canvasloader-container" style="display: none;">
+    <img src="/bundles/avlist/images/ajax-loader.gif" title="Chargement en cours" alt="Chargement" width="32" height="32">
+</div>
