@@ -112,7 +112,7 @@ abstract class AvList
      */
     public function getOption($name)
     {
-        return $this->option[$name];
+        return $this->options[$name];
     }
 
     /**
