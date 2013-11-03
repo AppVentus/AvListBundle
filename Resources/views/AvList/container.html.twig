@@ -13,11 +13,11 @@
                 type: 'GET',
                 success: function(data) {
                 $('#canvasloader-container').fadeOut();
-                $('#{{list.options.container_id}}').html(data);
+                $('#{{ list.options.container_id }}').html(data);
                 },
                 error: function(data) {
                     $('#canvasloader-container').fadeOut();
-                    alert('Il semble s\'être produit une erreur'');
+                    alert('Il semble s\'être produit une erreur');
                 }
             });
 
