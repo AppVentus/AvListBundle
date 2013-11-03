@@ -128,11 +128,11 @@ abstract class AvList
                     $paginatorControl = $this->templating->render(
                         'AvListBundle:AvList:rangeCursor.html.twig',
                         array(
-                            'paginator'        => $this->pager,
+                            'paginator'        => $this->getPager(),
                             'route'            => isset($this->options['route']) ? $this->options['route'] : $this->request->get('_route'),
                             'route_parameters' => $this->options['route_parameters'] ? $this->options['route_parameters'] : $this->request->get('_parameters', array()),
-                            'orderby'          => $this->orderby,
-                            'way'              => $this->way,
+                            'sort'             => $this->sort,
+                            'order'            => $this->order,
                             'update_id'        => $this->options['update_id'] ? : null,
                             'container_id'     => $this->options['container_id'] ? : ''
                         ));
@@ -148,7 +148,7 @@ abstract class AvList
             };
 
             $view = new \Pagerfanta\View\TwitterBootstrapView();
-            $paginatorControl = $view->render($this->pager, $routeGenerator, $this->options);
+            $paginatorControl = $view->render($this->getPager(), $routeGenerator, $this->options);
         }
 
         return $paginatorControl;

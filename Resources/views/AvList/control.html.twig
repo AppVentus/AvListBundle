@@ -8,7 +8,7 @@
          * Create the table sorting links (th.sortable => th.sortable > a)
          */
         $('#{{ list.options.container_id }} thead th.sortable').each(function(){
-            uri = "{{ path(list.options.route, list.options.route_parameters) }}";
+            uri = '{{ path(list.options.route, list.options.route_parameters) }}';
             uri = updateQueryStringParameter('sort', $(this).data('filter'), uri);
             var order;
             if ('{{ list.sort }}' === $(this).data('filter')) {
@@ -18,7 +18,7 @@
             }
             uri = updateQueryStringParameter('order', order, uri);
             title = $(this).html();
-            link = '<a href="'+uri+'">'+title+'</a>';
+            link = '<a href="' + uri + '">' + title + '</a>';
             $(this).html(link);
         });
     });

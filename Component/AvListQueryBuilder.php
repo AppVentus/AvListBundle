@@ -11,7 +11,7 @@ class AvListQueryBuilder extends AvList implements AvListInterface
     /**
      * Set data.
      *
-     * @param array $queryBuilder QueryBuilder.
+     * @param QueryBuilder $queryBuilder QueryBuilder.
      * @return AvListQueryBuilder
      */
     public function setData($qb)

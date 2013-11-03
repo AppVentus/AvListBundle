@@ -5,7 +5,7 @@
         <span>
             <a class="ajax"
                update="{{ update_id ? update_id : container_id}}"
-               href="{{ path(route, route_parameters|merge({'page': paginator.getCurrentPage-1, 'sort': sort, 'order': order })) }}">
+               href="{{ path(route, route_parameters|merge({'page': paginator.currentPage-1, 'sort': sort, 'order': order })) }}">
                 &larr;
             </a>&nbsp;
         </span>
@@ -20,7 +20,7 @@
             {{ paginator.nbResults }}
         {% endif %}
 
-        ] {{ 'on'|trans|desc('on')}} {{ paginator.getNbResults }}
+        ] {{ 'on'|trans|desc('on')}} {{ paginator.nbResults }}
     </span>
 
     {% if paginator.currentPage != paginator.nbPages %}
