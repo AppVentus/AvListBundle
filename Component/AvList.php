@@ -86,7 +86,7 @@ abstract class AvList
     /**
      * Set option.
      *
-     * @param string $name Name of option.
+     * @param string $name  Name of option.
      * @param string $value Value of option.
      */
     public function addOption($name, $value)
@@ -181,6 +181,6 @@ abstract class AvList
      */
     public function toggleOrder()
     {
-        return $this->getSort() == 'ASC' ? 'DESC' : 'ASC';
+        return $this->getOrder() === 'ASC' ? 'DESC' : 'ASC';
     }
 }
