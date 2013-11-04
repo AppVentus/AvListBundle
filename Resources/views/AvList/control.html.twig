@@ -22,6 +22,20 @@
             $(this).html(link);
         });
     });
+
+    /**
+     * update the url with parameters
+     * @return string The url with the related param
+     */
+    function updateQueryStringParameter(key, value, uri) {
+        var re = new RegExp("(&|\\?)"+key+"=[^\&]*", "i");
+        separator = uri.indexOf('?') !== -1 ? "&" : "?";
+        if (uri.match(re)) {
+            return uri.replace(re, '$1' + key + "=" + value);
+        } else {
+            return uri + separator + key + "=" + value;
+        }
+    }
 </script>
 
 <div id="canvasloader-container" style="display: none;">
