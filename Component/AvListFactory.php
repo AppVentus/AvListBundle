@@ -36,9 +36,12 @@ class AvListFactory
      */
     public function getList($data, $template, array $options = array())
     {
-        switch ($data) {
+        switch (true) {
             case $data instanceof \Doctrine\ORM\QueryBuilder:
                 $list =  new AvListQueryBuilder($this->request, $this->templating, $data, $template, $options);
+                break;
+            case is_array($data):
+                $list =  new AvListArray($this->request, $this->templating, $data, $template, $options);
                 break;
 
             default:

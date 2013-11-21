@@ -12,7 +12,6 @@
             uri = updateQueryStringParameter('sort', $(this).data('filter'), uri);
             var order;
             if ('{{ list.sort }}' === $(this).data('filter')) {
-            console.log('{{list.toggleOrder}}');
                 order = '{{list.toggleOrder}}';
             } else {
                 order = 'ASC';
