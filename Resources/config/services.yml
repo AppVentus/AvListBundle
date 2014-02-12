@@ -1,7 +1,7 @@
 services:
     av_list:
         class: AppVentus\ListBundle\Component\AvListFactory
-        arguments: [@request, @templating]
+        arguments: [@request, @templating, @translator]
         public: true
         scope: request
 

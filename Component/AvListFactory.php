@@ -15,15 +15,19 @@ class AvListFactory
     protected $request;
     /** @var TwigEngine */
     protected $templating;
+    /** @var Translator */
+    protected $translator;
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request    The request.
      * @param \Symfony\Bundle\TwigBundle\TwigEngine     $templating The templating engine.
+     * @param Translator                                $translator The translator service
      */
-    public function __construct(Request $request, TwigEngine $templating)
+    public function __construct(Request $request, TwigEngine $templating, $translator)
     {
-        $this->request    = $request;
+        $this->request = $request;
         $this->templating = $templating;
+        $this->translator = $translator;
     }
 
     /**
@@ -36,6 +40,14 @@ class AvListFactory
      */
     public function getList($data, $template, array $options = array())
     {
+        //get the translations if they are not given
+        if (!isset($options['prev_message'])) {
+            $options['prev_message'] = $this->translator->trans('prev_message', array(), 'av_list');
+        }
+        if (!isset($options['next_message'])) {
+            $options['next_message'] = $this->translator->trans('next_message', array(), 'av_list');
+        }
+
         switch (true) {
             case $data instanceof \Doctrine\ORM\QueryBuilder:
                 $list =  new AvListQueryBuilder($this->request, $this->templating, $data, $template, $options);

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="not.available">
+    <header>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
+    </header>
+    <body>
+      <trans-unit id="d7ac9873733b63823cd81582cf092babe799fc92" resname="item.id">
+        <source>#</source>
+        <target>#</target>
+        <jms:reference-file line="8">views/AvList/list.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="553d5cfae58bf51caf4f6fa6fe62705c2aa38dad" resname="next_message">
+        <source>next_message</source>
+        <target><![CDATA[Suivant &rarr;]]></target>
+        <jms:reference-file line="48">ListBundle/Component/AvListFactory.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="eb49b4ba3c7e1ef3ac5b6d8f82f8095bed616989" resname="no.result">
+        <source>No result</source>
+        <target>Aucun résultat</target>
+        <jms:reference-file line="24">views/AvList/list.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="db3d405b10675998c030223177d42e71b4e7a312" resname="on">
+        <source>on</source>
+        <target>sur</target>
+        <jms:reference-file line="23">views/AvList/rangeCursor.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="976d6deca70ecfc785daa28de29bfd7fee9b9351" resname="prev_message">
+        <source>prev_message</source>
+        <target><![CDATA[&larr; Précédent]]></target>
+        <jms:reference-file line="45">ListBundle/Component/AvListFactory.php</jms:reference-file>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
