@@ -44,6 +44,16 @@ This is a classic action to list an entity :
             return array(
                 'list' => $list,
             );
+            
+            if ($this->get('request')->isXmlHttpRequest()) {
+                return $this->render($list->getTemplate(), array(
+                    'list' => $list,
+                ));
+            } else {
+                return array(
+                    'list' => $list,
+                );
+            }
         }
     }
 
