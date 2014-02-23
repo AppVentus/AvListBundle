@@ -5,15 +5,25 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th class="sortable" data-filter="item.id">{{ 'item.id'|trans|desc('#') }}</th>
+                {% for column in list.columns %}
+                    {% if column.sortable %}
+                    <th class="sortable" data-filter="{{ column.sortable_id }}">{{ column.label|trans }}</th>
+                    {% else %}
+                    <th>{{ column.label|trans }}</th>
+                    {% endif %}
+                {% endfor %}
                 </tr>
             </thead>
             <tbody>
             {% for item in list.pager %}
+
                 <tr class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
-                    <td>
-                        {{ item.id }}
-                    </td>
+
+                {% for column in list.columns %}
+                    <td>{{ attribute(item, column.id)|listValueRender(column.filters) }}</td>
+                {% else %}
+                    <td>{{ 'no-columns'|trans|desc('No columns, did you forget to use addColumn ?')}}</td>
+                {% endfor %}
                 </tr>
             {% endfor %}
             </tbody>
