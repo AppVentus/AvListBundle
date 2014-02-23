@@ -20,7 +20,7 @@ class ListExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'list_widget'       => new \Twig_Function_Method($this, 'listWidget', array('is_safe' => array('html')))
+            'list_widget' => new \Twig_Function_Method($this, 'listWidget', array('is_safe' => array('html')))
         );
     }
 
@@ -34,9 +34,9 @@ class ListExtension extends \Twig_Extension
                 'listValueRender',
                 array($this, 'listValueRender'),
                 array(
-                    'is_safe' => array('html'),
+                    'is_safe'           => array('html'),
                     'needs_environment' => true,
-                    'needs_context' => true,
+                    'needs_context'     => true,
                 )
             )
         );
@@ -54,6 +54,10 @@ class ListExtension extends \Twig_Extension
 
     /**
      * Render a value for a column with the specific filter
+     * @description :
+     * 1. Check filters given (array? empty ?)
+     * 2. Create the string with given var and apply each filter
+     * 3. Return the string as template or the value directly if no filters
      *
      * return string
      */
