@@ -141,3 +141,7 @@ Also, you won't be able to use the av_list service because of a singleton patter
         }
     }
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/AppVentus/avlistbundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
