@@ -24,6 +24,8 @@ abstract class AvList
     protected $sort;
     /** @var string */
     protected $order;
+    /** @var array */
+    protected $columns = array();
 
     /**
      *
@@ -182,5 +184,53 @@ abstract class AvList
     public function toggleOrder()
     {
         return $this->getOrder() === 'ASC' ? 'DESC' : 'ASC';
+    }
+
+    /**
+     * Add column
+     *
+     * @param string  $id         The name of the column of the function of the object
+     * @param string  $filter     The twig filters you want to apply : array('name' => 'localizeddate', 'params' => array('medium', null))
+     * @param string  $labelId    The id of the label
+     * @param boolean $sortable   Can this column be sorted
+     * @param string  $sortableId The identifier of the sort
+     *
+     * @return array The array of a column definition
+     */
+    public function addColumn($id, $filters = array(), $labelId = null, $sortable = false, $sortableId = null)
+    {
+        //by default the id is used for the column label
+        if ($labelId === null) {
+            $labelId = $id;
+        }
+
+        //if sortable, then sortableId is mandatory
+        if ($sortable === true) {
+            if ($sortableId === null) {
+                throw new \Exception('The column '.$id.' is sortable but has no $sortableId defined');
+            }
+        }
+
+        $column = array(
+            'id'          => $id,
+            'filters'     => $filters,
+            'label'       => $labelId,
+            'sortable'    => $sortable,
+            'sortable_id' => $sortableId
+        );
+
+        $this->columns[] = $column;
+
+        return $this;
+    }
+
+    /**
+     * Get the columns to display
+     * @return multitype:string
+     */
+    public function getColumns()
+    {
+
+        return $this->columns;
     }
 }

@@ -21,6 +21,11 @@
         <target>Aucun résultat</target>
         <jms:reference-file line="24">views/AvList/list.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="e234Db49b4ba3c7e1ef3ac5b6d8f82f8095bed34" resname="no-columns">
+        <source>No columns, did you forget to use addColumn ?</source>
+        <target>Aucune colonne définie. Avez-vous oublié d'utiliser la fonction addColumn ?</target>
+        <jms:reference-file line="24">views/AvList/list.html.twig</jms:reference-file>
+      </trans-unit>
       <trans-unit id="db3d405b10675998c030223177d42e71b4e7a312" resname="on">
         <source>on</source>
         <target>sur</target>

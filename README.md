@@ -33,9 +33,13 @@ This is a classic action to list an entity :
             $qb = $em->getRepository(MyBundle:Foo)->findAll();
 
             // Create an AvList
-            $list = $this->get('av_list')->getList($qb, 'template.html', array(
+            $list = $this->get('av_list')->getList($qb, null, array(
                 'max_per_page' => 20,
             ));
+
+            $list->addColumn('title', null, 'myList.column.title', true, 'entity.title');
+            $list->addColumn('startDate', array(array("name" => "date", "params" => array('d/m/Y'))), 'myList.column.startDate', true, 'entity.startDate');
+
 
             return array(
                 'list' => $list,
@@ -43,10 +47,19 @@ This is a classic action to list an entity :
         }
     }
 
-b) View :
+The addColunmn allow you to add/define the columns to display in the list. In order :
+
+- 1. You can define the field to display
+- 2. Is there some special Twig filters to use on the variable to display correctly ?
+- 3. The label (th)
+- 4. Do we may sort on this column ?
+- 5. If so, on which field
+
+
+b) View (optional):
 ---------------
 
-We now load two views, an index with the layout, and a partial witch just contain the list:
+If you want to override default views, you'll have to write an index with the layout, and a partial witch just contain the list:
 
 index.html.twig :
 
