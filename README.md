@@ -165,6 +165,9 @@ Also, you won't be able to use the av_list service because of a singleton patter
     }
 
 
+6) Custom control theme
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/AppVentus/avlistbundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+By default, AvList provides one theme : range.
+This theme adds the basics actions to get something like this : <- [10,20] on 100 ->
 
+If you want to, you can create your own theme by setting your theme name as "theme" option and to put it in the app/Resources/AvListBundle/views/AvList/yourCustomThemeFileName.html.twig
