@@ -166,6 +166,7 @@ Also, you won't be able to use the av_list service because of a singleton patter
 
 
 6) Custom control theme
+----------------
 
 By default, AvList provides one theme : range.
 This theme adds the basics actions to get something like this : <- [10,20] on 100 ->
