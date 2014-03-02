@@ -64,7 +64,7 @@ class ListExtension extends \Twig_Extension
     public function listValueRender(\Twig_Environment $env, $context = array(), $value, $filters = null)
     {
         if (is_array($filters) && !empty($filters)) {
-            $response = "{{ ".key(compact('value'));
+            $response = "{{ value";
             foreach ($filters as $key => $filter) {
                 $response .= "|".$filter['name'];
                 if (!empty($filter['params'])) {
