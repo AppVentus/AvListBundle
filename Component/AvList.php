@@ -124,25 +124,20 @@ abstract class AvList
      */
     public function getControl()
     {
+        $params = array(
+            'paginator'        => $this->getPager(),
+            'route'            => isset($this->options['route']) ? $this->options['route'] : $this->request->get('_route'),
+            'route_parameters' => $this->options['route_parameters'] ? $this->options['route_parameters'] : $this->request->get('_parameters', array()),
+            'sort'             => $this->sort,
+            'order'            => $this->order,
+            'update_id'        => $this->options['update_id'] ? : null,
+            'container_id'     => $this->options['container_id'] ? : ''
+        );
+
         if (array_key_exists('theme', $this->options)) {
-            switch ($this->options['theme']) {
-                case 'range':
-                    $paginatorControl = $this->templating->render(
-                        'AvListBundle:AvList:rangeCursor.html.twig',
-                        array(
-                            'paginator'        => $this->getPager(),
-                            'route'            => isset($this->options['route']) ? $this->options['route'] : $this->request->get('_route'),
-                            'route_parameters' => $this->options['route_parameters'] ? $this->options['route_parameters'] : $this->request->get('_parameters', array()),
-                            'sort'             => $this->sort,
-                            'order'            => $this->order,
-                            'update_id'        => $this->options['update_id'] ? : null,
-                            'container_id'     => $this->options['container_id'] ? : ''
-                        ));
-                    break;
-                default:
-                    throw new \Exception('Theme not supported, available is : \'range\'');
-                    break;
-            }
+            $paginatorControl = $this->templating->render(
+                'AvListBundle:AvList:'. $this->options['theme'] .'.html.twig', $params
+            );
         } else {
             //TODO : make it possible to have several list with this TwitterBootstrapView paginator component
             $routeGenerator = function($page) {

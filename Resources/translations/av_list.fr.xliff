@@ -29,7 +29,7 @@
       <trans-unit id="db3d405b10675998c030223177d42e71b4e7a312" resname="on">
         <source>on</source>
         <target>sur</target>
-        <jms:reference-file line="23">views/AvList/rangeCursor.html.twig</jms:reference-file>
+        <jms:reference-file line="23">views/AvList/range.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="976d6deca70ecfc785daa28de29bfd7fee9b9351" resname="prev_message">
         <source>prev_message</source>
