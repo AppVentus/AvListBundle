@@ -73,9 +73,8 @@ class ListExtension extends \Twig_Extension
             }
             $response .= " }}";
             $twigEnv = new \Twig_Environment(new \Twig_Loader_String());
-            $value = $twigEnv->render(
-              $response
-            );
+            $twigEnv->addGlobal('value', $value);
+            $value = $twigEnv->render($response);
         }
 
         return $value;
