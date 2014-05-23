@@ -93,7 +93,7 @@ abstract class AvList
      */
     public function addOption($name, $value)
     {
-        $this->option[$name] = $value;
+        $this->options[$name] = $value;
     }
 
     /**
@@ -214,7 +214,7 @@ abstract class AvList
             'sortable_id' => $sortableId
         );
 
-        $this->columns[] = $column;
+        $this->columns[$id] = $column;
 
         return $this;
     }
