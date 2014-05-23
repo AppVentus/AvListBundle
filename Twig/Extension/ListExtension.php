@@ -68,7 +68,7 @@ class ListExtension extends \Twig_Extension
             foreach ($filters as $key => $filter) {
                 $response .= "|".$filter['name'];
                 if (!empty($filter['params'])) {
-                    $response .= "('".implode(', ', $filter['params'])."')";
+                    $response .= "('".implode("', '", $filter['params'])."')";
                 }
             }
             $response .= " }}";
