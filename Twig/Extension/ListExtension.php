@@ -72,9 +72,26 @@ class ListExtension extends \Twig_Extension
                 }
             }
             $response .= " }}";
-            $twigEnv = new \Twig_Environment(new \Twig_Loader_String());
-            $twigEnv->addGlobal('value', $value);
-            $value = $twigEnv->render($response);
+
+            //see http://twig.sensiolabs.org/doc/functions/template_from_string.html
+            $name = sprintf('__string_template__%s', hash('sha256', uniqid(mt_rand(), true), false));
+
+            $loader = new \Twig_Loader_Chain(array(
+                new \Twig_Loader_Array(array($name => $response)),
+                $current = $env->getLoader(),
+            ));
+
+            $env->setLoader($loader);
+            try {
+                $value = $env->loadTemplate($name)->render(array('value' => $value));
+            } catch (\Exception $e) {
+                $env->setLoader($current);
+
+                throw $e;
+            }
+            $env->setLoader($current);
+
+
         }
 
         return $value;
