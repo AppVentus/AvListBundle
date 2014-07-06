@@ -73,25 +73,14 @@ class ListExtension extends \Twig_Extension
             }
             $response .= " }}";
 
-            //see http://twig.sensiolabs.org/doc/functions/template_from_string.html
-            $name = sprintf('__string_template__%s', hash('sha256', uniqid(mt_rand(), true), false));
-
-            $loader = new \Twig_Loader_Chain(array(
-                new \Twig_Loader_Array(array($name => $response)),
-                $current = $env->getLoader(),
-            ));
-
-            $env->setLoader($loader);
-            try {
-                $value = $env->loadTemplate($name)->render(array('value' => $value));
-            } catch (\Exception $e) {
-                $env->setLoader($current);
-
-                throw $e;
+            //Creates a new twig environment
+            $twigEnv = new \Twig_Environment(new \Twig_Loader_String());
+            //Automatically inject all extensions to our new twig environment
+            foreach ($this->twig->getExtensions() as $_ext) {
+                $twigEnv->addExtension($_ext);
             }
-            $env->setLoader($current);
-
-
+            $twigEnv->addGlobal('value', $value);
+            $value = $twigEnv->render($response);
         }
 
         return $value;
