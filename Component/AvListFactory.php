@@ -38,7 +38,7 @@ class AvListFactory
      * @param array  $options  Array of options.
      * @return AvList
      */
-    public function getList($data, $template, array $options = array())
+    public function getList($data, $sort, $order = 'ASC', $template, array $options = array())
     {
         //get the translations if they are not given
         if (!isset($options['prev_message'])) {
@@ -50,10 +50,10 @@ class AvListFactory
 
         switch (true) {
             case $data instanceof \Doctrine\ORM\QueryBuilder:
-                $list =  new AvListQueryBuilder($this->request, $this->templating, $data, $template, $options);
+                $list =  new AvListQueryBuilder($this->request, $this->templating,$data, $sort, $order,  $template, $options);
                 break;
             case is_array($data):
-                $list =  new AvListArray($this->request, $this->templating, $data, $template, $options);
+                $list =  new AvListArray($this->request, $this->templating, $data, $sort, $order, $template, $options);
                 break;
 
             default:

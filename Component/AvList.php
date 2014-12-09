@@ -35,14 +35,14 @@ abstract class AvList
      * @param string       $template     Template to render.
      * @param array        $options      Array of options.
      */
-    public function __construct(Request $request, TwigEngine $templating, $qb, $template = null, array $options = array())
+    public function __construct(Request $request, TwigEngine $templating, $qb, $sort, $order = 'ASC', $template = null, array $options = array())
     {
         $this->request    = $request;
         $this->templating = $templating;
         $this->template   = (is_string($template)) ? $template : 'AvListBundle:AvList:list.html.twig';
         $this->page       = ($this->request->query->get('page')) ? $this->request->query->get('page') : 1;
-        $this->sort       = $this->request->query->get('sort');
-        $this->order      = $this->request->query->get('order') ? $this->request->query->get('order') : 'ASC';
+        $this->sort       = $this->request->query->get('sort') ?: $sort;
+        $this->order      = $this->request->query->get('order') ?: $order;
 
         $this->setData($qb);
         $this->setOptions($options);
