@@ -38,7 +38,7 @@ class AvListFactory
      * @param array  $options  Array of options.
      * @return AvList
      */
-    public function getList($data, $sort, $order = 'ASC', $template, array $options = array())
+    public function getList($data, $sort, $order, $template, array $options = array())
     {
         //get the translations if they are not given
         if (!isset($options['prev_message'])) {
