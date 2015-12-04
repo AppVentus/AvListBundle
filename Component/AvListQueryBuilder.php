@@ -1,10 +1,11 @@
 <?php
+
 namespace AppVentus\ListBundle\Component;
 
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * AvListQueryBuilder class
+ * AvListQueryBuilder class.
  */
 class AvListQueryBuilder extends AvList implements AvListInterface
 {
@@ -12,6 +13,7 @@ class AvListQueryBuilder extends AvList implements AvListInterface
      * Set data.
      *
      * @param QueryBuilder $queryBuilder QueryBuilder.
+     *
      * @return AvListQueryBuilder
      */
     public function setData($qb)
@@ -42,7 +44,7 @@ class AvListQueryBuilder extends AvList implements AvListInterface
     public function getPager()
     {
         $adapter = new \Pagerfanta\Adapter\DoctrineORMAdapter($this->data->getQuery());
-        $pager   = new \Pagerfanta\Pagerfanta($adapter);
+        $pager = new \Pagerfanta\Pagerfanta($adapter);
         $pager->setMaxPerPage($this->options['max_per_page']);
         $pager->setCurrentPage($this->page);
 
