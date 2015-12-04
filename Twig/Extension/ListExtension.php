@@ -1,4 +1,5 @@
 <?php
+
 namespace AppVentus\ListBundle\Twig\Extension;
 
 /**
@@ -7,7 +8,7 @@ namespace AppVentus\ListBundle\Twig\Extension;
 class ListExtension extends \Twig_Extension
 {
     /**
-     * contructor
+     * contructor.
      */
     public function __construct($twig)
     {
@@ -15,45 +16,46 @@ class ListExtension extends \Twig_Extension
     }
 
     /**
-     * register twig functions
+     * register twig functions.
      */
     public function getFunctions()
     {
-        return array(
-            'list_widget' => new \Twig_Function_Method($this, 'listWidget', array('is_safe' => array('html')))
-        );
+        return [
+            'list_widget' => new \Twig_Function_Method($this, 'listWidget', ['is_safe' => ['html']]),
+        ];
     }
 
     /**
-     * register twig filters
+     * register twig filters.
      */
     public function getFilters()
     {
-        return array(
+        return [
             'list_value_render' => new \Twig_SimpleFilter(
                 'listValueRender',
-                array($this, 'listValueRender'),
-                array(
-                    'is_safe'           => array('html'),
+                [$this, 'listValueRender'],
+                [
+                    'is_safe'           => ['html'],
                     'needs_environment' => true,
                     'needs_context'     => true,
-                )
-            )
-        );
+                ]
+            ),
+        ];
     }
 
     /**
-     * Render actions for a widget
+     * Render actions for a widget.
      *
      * return string
      */
-    public function listWidget($list, $extra = array())
+    public function listWidget($list, $extra = [])
     {
-        return $this->twig->render('AvListBundle:AvList:container.html.twig', array('list' => $list, 'extra' => $extra));
+        return $this->twig->render('AvListBundle:AvList:container.html.twig', ['list' => $list, 'extra' => $extra]);
     }
 
     /**
-     * Render a value for a column with the specific filter
+     * Render a value for a column with the specific filter.
+     *
      * @description :
      * 1. Check filters given (array? empty ?)
      * 2. Create the string with given var and apply each filter
@@ -61,17 +63,17 @@ class ListExtension extends \Twig_Extension
      *
      * return string
      */
-    public function listValueRender(\Twig_Environment $env, $context = array(), $value, $filters = null)
+    public function listValueRender(\Twig_Environment $env, $context = [], $value, $filters = null)
     {
         if (is_array($filters) && !empty($filters)) {
-            $response = "{{ value";
+            $response = '{{ value';
             foreach ($filters as $key => $filter) {
-                $response .= "|".$filter['name'];
+                $response .= '|'.$filter['name'];
                 if (!empty($filter['params'])) {
                     $response .= "('".implode("', '", $filter['params'])."')";
                 }
             }
-            $response .= " }}";
+            $response .= ' }}';
 
             //Creates a new twig environment
             $twigEnv = new \Twig_Environment(new \Twig_Loader_String());
@@ -84,9 +86,7 @@ class ListExtension extends \Twig_Extension
         }
 
         return $value;
-
     }
-
 
     /**
      * Get extension name.
