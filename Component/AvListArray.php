@@ -1,12 +1,12 @@
 <?php
+
 namespace AppVentus\ListBundle\Component;
 
 /**
- * AvListArray class
+ * AvListArray class.
  */
 class AvListArray extends AvList implements AvListInterface
 {
-
     /** @var array */
     protected $data;
 
@@ -14,6 +14,7 @@ class AvListArray extends AvList implements AvListInterface
      * Set data.
      *
      * @param array $array
+     *
      * @return AvListArray
      */
     public function setData($array)
@@ -41,7 +42,7 @@ class AvListArray extends AvList implements AvListInterface
     public function getPager()
     {
         $adapter = new \Pagerfanta\Adapter\ArrayAdapter($this->data);
-        $pager   = new \Pagerfanta\Pagerfanta($adapter);
+        $pager = new \Pagerfanta\Pagerfanta($adapter);
         $pager->setMaxPerPage($this->options['max_per_page']);
         $pager->setCurrentPage($this->page);
 
