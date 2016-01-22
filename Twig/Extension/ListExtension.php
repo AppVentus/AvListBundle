@@ -19,9 +19,9 @@ class ListExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            'list_widget' => new \Twig_Function_Method($this, 'listWidget', array('is_safe' => array('html')))
-        );
+        return [
+            new \Twig_SimpleFunction('list_widget', [$this, 'listWidget'], ['is_safe' => ['html']])
+        ];
     }
 
     /**
@@ -29,17 +29,12 @@ class ListExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
-            'list_value_render' => new \Twig_SimpleFilter(
-                'listValueRender',
-                array($this, 'listValueRender'),
-                array(
-                    'is_safe'           => array('html'),
+        return [
+            new \Twig_SimpleFilter('list_value_render', [$this, 'listValueRender'], [
+                    'is_safe'           => ['html'],
                     'needs_environment' => true,
                     'needs_context'     => true,
-                )
-            )
-        );
+                ])];
     }
 
     /**
@@ -74,13 +69,12 @@ class ListExtension extends \Twig_Extension
             $response .= " }}";
 
             //Creates a new twig environment
-            $twigEnv = new \Twig_Environment(new \Twig_Loader_String());
+            $twig = new \Twig_Environment(new \Twig_Loader_Array(['response' => $response]));
             //Automatically inject all extensions to our new twig environment
             foreach ($this->twig->getExtensions() as $_ext) {
-                $twigEnv->addExtension($_ext);
+                $twig->addExtension($_ext);
             }
-            $twigEnv->addGlobal('value', $value);
-            $value = $twigEnv->render($response);
+            $value = $twig->render('response', ['value' => $value]);
         }
 
         return $value;
