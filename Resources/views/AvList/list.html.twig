@@ -20,7 +20,7 @@
                 <tr class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
 
                 {% for column in list.columns %}
-                    <td>{{ attribute(item, column.id)|listValueRender(column.filters) }}</td>
+                    <td>{{ attribute(item, column.id)|list_value_render(column.filters) }}</td>
                 {% else %}
                     <td>{{ 'no-columns'|trans|desc('No columns, did you forget to use addColumn ?')}}</td>
                 {% endfor %}
