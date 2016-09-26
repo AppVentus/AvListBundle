@@ -1,8 +1,8 @@
 <?php
 namespace AppVentus\ListBundle\Component;
 
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\TwigBundle\TwigEngine;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -12,7 +12,7 @@ abstract class AvList
 {
     /** @var Request */
     protected $request;
-    /** @var TwigEngine */
+    /** @var EngineInterface */
     protected $templating;
     /** @var string */
     protected $template;
@@ -29,13 +29,13 @@ abstract class AvList
 
     /**
      *
-     * @param Request      $request      The request.
-     * @param TwigEngine   $templating   The templating engine.
-     * @param QueryBuilder $queryBuilder The queryBuilder.
-     * @param string       $template     Template to render.
-     * @param array        $options      Array of options.
+     * @param Request         $request      The request.
+     * @param EngineInterface $templating   The templating engine.
+     * @param QueryBuilder    $queryBuilder The queryBuilder.
+     * @param string          $template     Template to render.
+     * @param array           $options      Array of options.
      */
-    public function __construct(Request $request, TwigEngine $templating, $qb, $sort, $order = 'ASC', $template = null, array $options = array())
+    public function __construct(Request $request, EngineInterface $templating, $qb, $sort, $order = 'ASC', $template = null, array $options = array())
     {
         $this->request    = $request;
         $this->templating = $templating;
