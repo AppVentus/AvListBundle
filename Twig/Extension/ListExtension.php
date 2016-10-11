@@ -6,6 +6,8 @@ namespace AppVentus\ListBundle\Twig\Extension;
  */
 class ListExtension extends \Twig_Extension
 {
+    protected $twig;
+
     /**
      * @param \Twig_Environment $twig
      */
@@ -30,7 +32,7 @@ class ListExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('listValueRender', [$this, 'listValueRender'], [
+            new \Twig_SimpleFilter('list_value_render', [$this, 'listValueRender'], [
                     'is_safe'           => ['html'],
                     'needs_environment' => true,
                     'needs_context'     => true,
