@@ -1,8 +1,9 @@
 <?php
 namespace AppVentus\ListBundle\Component;
 
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * AvListFactory
@@ -13,17 +14,17 @@ class AvListFactory
 {
     /** @var Request */
     protected $request;
-    /** @var TwigEngine */
+    /** @var EngineInterface */
     protected $templating;
-    /** @var Translator */
+    /** @var TranslatorInterface */
     protected $translator;
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request    The request.
-     * @param \Symfony\Bundle\TwigBundle\TwigEngine     $templating The templating engine.
-     * @param Translator                                $translator The translator service
+     * @param Request             $request    The request.
+     * @param EngineInterface     $templating The templating engine.
+     * @param TranslatorInterface $translator The translator service
      */
-    public function __construct(Request $request, TwigEngine $templating, $translator)
+    public function __construct(Request $request, EngineInterface $templating, TranslatorInterface $translator)
     {
         $this->request = $request;
         $this->templating = $templating;
